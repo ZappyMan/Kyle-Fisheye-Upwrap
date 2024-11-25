@@ -5,20 +5,9 @@ import numpy as np
 video_file_path = "/Users/elliott/Documents/SeaStereo/Software/Kyle_calibration/assets/footage/fisheye_test_Z8+8-15mm_lens_11mm_1K_120fps_1920x1080.mp4"  # Path to input video
 checkerboard_size = (13, 8)  # Length and width of the checkerboard pattern
 calibration_output_path = "/Users/elliott/Documents/SeaStereo/Software/Kyle_calibration/calibrations/Z8+8-15mm_lens_11mm_1K.npz"  # Output path for calibration file
-frame_interval = 60  # Number of frames to skip between checks
+frame_interval = 60 
 
 def calibrate_fisheye_video(video_file, checkerboard, frame_interval=30):
-    """
-    Calibrate a fisheye camera using a video file containing a checkerboard pattern.
-
-    Parameters:
-        video_file (str): Path to the input video file.
-        checkerboard (tuple): Dimensions of the checkerboard pattern (rows, columns).
-        frame_interval (int): Number of frames to skip for calibration.
-
-    Returns:
-        tuple: Camera matrix, distortion coefficients, and calibration image dimensions.
-    """
     objp = np.zeros((1, checkerboard[0] * checkerboard[1], 3), np.float32)
     objp[0, :, :2] = np.mgrid[0:checkerboard[1], 0:checkerboard[0]].T.reshape(-1, 2)
 
@@ -47,7 +36,7 @@ def calibrate_fisheye_video(video_file, checkerboard, frame_interval=30):
             if ret:
                 detected_count += 1
                 calibration_dim = gray.shape[::-1]
-                objpoints.append(objp.copy())  # Ensure a new instance of objp is added
+                objpoints.append(objp.copy())
                 corners2 = cv2.cornerSubPix(
                     gray, corners, (3, 3), (-1, -1),
                     (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.1)
